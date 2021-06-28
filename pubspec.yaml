@@ -1,0 +1,17 @@
+name: color_randomizer
+description: Creates random RGB colors, with customization options for each color channel and alpha channel.
+version: 0.0.1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
