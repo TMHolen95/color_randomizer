@@ -115,4 +115,48 @@ void main() {
           reason: "Should be constrained between 128 and 255");
     }
   });
+
+  test('Random color resolution', () {
+    final r = RandomARGB.randomColor();
+
+    for (int i = 0; i < 1000; i++) {
+      int channelValue = r.randomHexValue(HexRange(0, 255), resolution: 5);
+      expect(channelValue % 5, 0, reason: "Mod should be 0");
+
+      int channelValue2 = r.randomHexValue(HexRange(0, 255), resolution: 2);
+      expect(channelValue2 % 2, 0, reason: "Mod should be 0");
+      print(channelValue);
+      expect(channelValue2 <= 255, true, reason: "Should not exceed 255");
+    }
+  });
+
+  test('Test unique color list generation, to many tries assigns loopBreakerColor', () {
+    final r = RandomARGB(
+      alphaConfig: HexRange.firstHalf(),
+      redConfig: HexRange.firstHalf(),
+      greenConfig: HexRange.firstHalf(),
+      blueConfig: HexRange.firstHalf(),
+      resolution: 85
+    );
+
+    for (int i = 0; i < 1; i++) {
+      List<Color> colors = r.getUniqueColors(50, loopBreakerColor: Color(0xffa2a2a2));
+      expect(colors.contains(Color(0xffa2a2a2)), true, reason: "Expected loopBreakerColor to be contained.");
+    }
+  });
+
+  test('Test unique color list generation, unique colors are generated', () {
+    final r = RandomARGB(
+        alphaConfig: HexRange.fullRange(),
+        redConfig: HexRange.fullRange(),
+        greenConfig: HexRange.fullRange(),
+        blueConfig: HexRange.fullRange(),
+        resolution: 5
+    );
+
+    for (int i = 0; i < 1; i++) {
+      List<Color> colors = r.getUniqueColors(500, loopBreakerColor: Color(0xff010101));
+      expect(colors.contains(Color(0xff010101)), false, reason: "Expected function to be able to generate unique random colors");
+    }
+  });
 }
