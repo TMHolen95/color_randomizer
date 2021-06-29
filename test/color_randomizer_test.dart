@@ -159,4 +159,24 @@ void main() {
       expect(colors.contains(Color(0xff010101)), false, reason: "Expected function to be able to generate unique random colors");
     }
   });
+
+  test('Absolute difference on color channels', () {
+    final r = RandomARGB.randomColor();
+
+    int difference = r.absoluteDifference(Color(0x05050505), Color(0x05050505));
+    expect(difference, 0, reason: "Expected identical colors to have a difference of 0");
+
+    int difference2 = r.absoluteDifference(Color(0x05050505), Color(0x09090909));
+    expect(difference2, 12, reason: "Expected colors to have a difference of 12, without alpha");
+
+    int difference3 = r.absoluteDifference(Color(0x09090909), Color(0x05050505));
+    expect(difference3, 12, reason: "Expected colors to have a difference of 12, without alpha");
+
+    int difference4 = r.absoluteDifference(Color(0x05050505), Color(0x09090909), alphaIncluded: true);
+    expect(difference4, 16, reason: "Expected colors to have a difference of 16, with alpha on");
+
+    int difference5 = r.absoluteDifference(Color(0x09090909), Color(0x05050505), alphaIncluded: true);
+    expect(difference5, 16, reason: "Expected colors to have a difference of 16, with alpha on");
+  });
+
 }

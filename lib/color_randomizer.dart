@@ -3,9 +3,8 @@ library color_randomizer;
 import 'dart:math' as Math;
 import 'dart:ui';
 
-abstract class RandomRGBMethods {
+abstract class RandomARGBMethods {
   final _r = Math.Random();
-  static const int defaultResolution = 1;
 
   Color nextColor();
   List<Color> getUniqueColors(int colorAmount,
@@ -15,6 +14,17 @@ abstract class RandomRGBMethods {
   Color fromARGBRanges(
       HexRange alpha, HexRange red, HexRange green, HexRange blue,
       {int resolution});
+
+  /// Returns the absolute value of the RGB color channels - summed up.
+  ///
+  /// Alpha can be included as a color channel in the abs calculation.
+  static int absoluteDifference(Color color1, Color color2, {bool alphaIncluded = false}) {
+    var alphaAbs = alphaIncluded ? (color1.alpha - color2.alpha).abs() : 0;
+    return alphaAbs +
+    (color1.red - color2.red).abs() +
+    (color1.green - color2.green).abs() +
+    (color1.blue - color2.blue).abs();
+  }
 
   /// Gives a random number, depending on the HexRange constraints and the resolution.
   ///
@@ -35,7 +45,7 @@ enum ARGBChannel { alpha, red, green, blue }
 
 /// Provides Random ARGB colors from a set [HexRange] config
 /// on each ARGB channel.
-class RandomARGB extends RandomRGBMethods {
+class RandomARGB extends RandomARGBMethods {
   final HexRange alphaConfig;
   final HexRange redConfig;
   final HexRange greenConfig;
